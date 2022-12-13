@@ -1,40 +1,41 @@
 package com.codestates.todoapp.dto;
 
 import com.codestates.todoapp.Todo;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class TodoMapper {
-    public Todo todoPostToTodo(TodoPostDto todoPostDto) {
-        if (todoPostDto == null) {
+    public Todo todoRequestDtoToTodo(TodoRequestDto requestDto) {
+        if (requestDto == null) {
             return null;
         }
 
+        if (ObjectUtils.isEmpty(requestDto.getTitle())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if (ObjectUtils.isEmpty(requestDto.getOrder())) {
+            requestDto.setOrder(0L);
+        }
+
+        if (ObjectUtils.isEmpty(requestDto.getCompleted())) {
+            requestDto.setCompleted(false);
+        }
+
         Todo todo = Todo.builder()
-                .title(todoPostDto.getTitle())
-                .order(todoPostDto.getOrder())
-                .completed(todoPostDto.getCompleted())
+                .title(requestDto.getTitle())
+                .order(requestDto.getOrder())
+                .completed(requestDto.getCompleted())
                 .build();
 
         return todo;
 
-    }
-
-    public Todo todoPatchToTodo(TodoPostDto todoPostDto) {
-        if (todoPostDto == null) {
-            return null;
-        }
-
-        Todo todo = Todo.builder()
-                .title(todoPostDto.getTitle())
-                .order(todoPostDto.getOrder())
-                .completed(todoPostDto.getCompleted())
-                .build();
-
-        return todo;
     }
 
     public TodoResponseDto todoToTodoResponseDto(Todo todo) {
@@ -42,15 +43,10 @@ public class TodoMapper {
             return null;
         }
 
-        Long id = 0L;
-        String title = null;
-        Long order = 0L;
-        Boolean completed = null;
-
-        id = todo.getId();
-        title = todo.getTitle();
-        order = todo.getOrder();
-        completed = todo.getCompleted();
+        Long id = todo.getId();
+        String title = todo.getTitle();
+        Long order = todo.getOrder();
+        Boolean completed = todo.getCompleted();
 
         TodoResponseDto todoResponseDto = TodoResponseDto
                 .builder()
@@ -58,6 +54,7 @@ public class TodoMapper {
                 .title(title)
                 .order(order)
                 .completed(completed)
+                .url("http://localhost:8080/"+id)
                 .build();
 
         return todoResponseDto;

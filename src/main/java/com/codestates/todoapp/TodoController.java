@@ -1,8 +1,7 @@
 package com.codestates.todoapp;
 
 import com.codestates.todoapp.dto.TodoMapper;
-import com.codestates.todoapp.dto.TodoPostDto;
-import com.codestates.todoapp.dto.TodoResponseDto;
+import com.codestates.todoapp.dto.TodoRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,19 +9,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin("https://todobackend.com")
 @RestController
 @RequestMapping("/")
-@RequiredArgsConstructor
 public class TodoController {
 
     private final TodoService todoService;
     private final TodoMapper mapper;
 
+    public TodoController(TodoService todoService, TodoMapper mapper) {
+        this.todoService = todoService;
+        this.mapper = mapper;
+    }
+
     // Todo 등록
     @PostMapping
-    public ResponseEntity postTodo(@RequestBody TodoPostDto todoPostDto) {
-        Todo createTodo = todoService.createTodo(mapper.todoPostToTodo(todoPostDto));
+    public ResponseEntity postTodo(@RequestBody TodoRequestDto requestDto) {
+        Todo createTodo = todoService.createTodo(mapper.todoRequestDtoToTodo(requestDto));
 
         return new ResponseEntity<>(mapper.todoToTodoResponseDto(createTodo), HttpStatus.CREATED);
     }
@@ -44,15 +47,8 @@ public class TodoController {
 
     // Todo 수정
     @PatchMapping("{todo-id}")
-    public ResponseEntity patchTodo(@PathVariable("todo-id") Long todoId, @RequestBody TodoPostDto todoPostDto) {
-        System.out.println("todoPostDto.getTitle() = " + todoPostDto.getTitle());
-        System.out.println("todoPostDto.getOrder() = " + todoPostDto.getOrder());
-        System.out.println("todoPostDto.getCompleted() = " + todoPostDto.getCompleted());
-
-        Todo updateTodo = todoService.updateTodo(todoId, todoPostDto);
-        System.out.println("updateTodo.getTitle() = " + updateTodo.getTitle());
-        System.out.println("updateTodo.getOrder() = " + updateTodo.getOrder());
-        System.out.println("updateTodo.getCompleted() = " + updateTodo.getCompleted());
+    public ResponseEntity patchTodo(@PathVariable("todo-id") Long todoId, @RequestBody TodoRequestDto requestDto) {
+        Todo updateTodo = todoService.updateTodo(todoId, requestDto);
 
         return new ResponseEntity<>(mapper.todoToTodoResponseDto(updateTodo), HttpStatus.OK);
     }

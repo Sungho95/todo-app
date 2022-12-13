@@ -1,5 +1,6 @@
 package com.codestates.todoapp.dto;
 
+import com.codestates.todoapp.Todo;
 import lombok.*;
 
 @Builder
@@ -11,5 +12,5 @@ public class TodoResponseDto {
     private String title;
     private Long order;
     private Boolean completed;
-
+    private String url;
 }

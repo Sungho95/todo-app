@@ -1,7 +1,9 @@
 package com.codestates.todoapp;
 
-import com.codestates.todoapp.dto.TodoPostDto;
+import com.codestates.todoapp.dto.TodoRequestDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,26 +28,19 @@ public class TodoService {
     /**
      * Todo 수정
      * @param todoId
-     * @param todoPostDto
+     * @param requestDto
      * @return
      */
-    public Todo updateTodo(Long todoId, TodoPostDto todoPostDto) {
+    public Todo updateTodo(Long todoId, TodoRequestDto requestDto) {
         Todo findTodo = findTodo(todoId);
 
-//        Todo updateTodo = Todo.builder()
-//                .id(todoId)
-//                .title(todoPostDto.getTitle())
-//                .order(todoPostDto.getOrder())
-//                .completed(todoPostDto.getCompleted())
-//                .build();
-
-        Optional.ofNullable(todoPostDto.getTitle())
+        Optional.ofNullable(requestDto.getTitle())
                 .ifPresent(title -> findTodo.setTitle(title));
 
-        Optional.ofNullable(todoPostDto.getOrder())
+        Optional.ofNullable(requestDto.getOrder())
                 .ifPresent(order -> findTodo.setOrder(order));
 
-        Optional.ofNullable(todoPostDto.getCompleted())
+        Optional.ofNullable(requestDto.getCompleted())
                 .ifPresent(completed -> findTodo.setCompleted(completed));
 
         return todoRepository.save(findTodo);
@@ -61,7 +56,7 @@ public class TodoService {
 
         // null이면 예외 발생
         Todo todo = optionalTodo.orElseThrow(() ->
-                new RuntimeException("찾을 수 없습니다."));
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return todo;
     }

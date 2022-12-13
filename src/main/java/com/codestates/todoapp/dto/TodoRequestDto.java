@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoPostDto {
+public class TodoRequestDto {
     private String title;
     private Long order;
     private Boolean completed;
