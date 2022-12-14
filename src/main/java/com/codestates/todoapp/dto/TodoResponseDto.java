@@ -1,6 +1,5 @@
 package com.codestates.todoapp.dto;
 
-import com.codestates.todoapp.Todo;
 import lombok.*;
 
 @Builder
