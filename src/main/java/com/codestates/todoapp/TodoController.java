@@ -3,6 +3,7 @@ package com.codestates.todoapp;
 import com.codestates.todoapp.dto.TodoMapper;
 import com.codestates.todoapp.dto.TodoRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,11 @@ import java.util.List;
 @CrossOrigin("https://todobackend.com")
 @RestController
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class TodoController {
 
     private final TodoService todoService;
     private final TodoMapper mapper;
-
-    public TodoController(TodoService todoService, TodoMapper mapper) {
-        this.todoService = todoService;
-        this.mapper = mapper;
-    }
 
     // Todo 등록
     @PostMapping
