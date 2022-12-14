@@ -3,7 +3,6 @@ package com.codestates.todoapp;
 import com.codestates.todoapp.dto.TodoMapper;
 import com.codestates.todoapp.dto.TodoRequestDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +54,7 @@ public class TodoController {
     public ResponseEntity deleteTodo(@PathVariable("todo-id") Long todoId) {
         todoService.deleteTodo(todoId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Todo 전체 삭제

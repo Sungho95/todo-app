@@ -3,19 +3,12 @@ plugins {
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
-	id 'war'
+//	id 'war'
 }
 
 group = 'com.codestates'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	asciidoctorExtensions
-}
 
 repositories {
 	mavenCentral()
@@ -23,6 +16,10 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
+}
+
+configurations {
+	asciidoctorExtensions
 }
 
 dependencies {
@@ -65,7 +62,6 @@ build {
 	dependsOn copyDocument
 }
 
-// (10)
 bootJar {
 	dependsOn copyDocument
 	from ("${asciidoctor.outputDir}") {
