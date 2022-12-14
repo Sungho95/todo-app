@@ -13,7 +13,7 @@ public class ToDoAppApplication extends SpringBootServletInitializer {
 	}
 
 	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) { // (2)
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(ToDoAppApplication.class);
 	}
 }
